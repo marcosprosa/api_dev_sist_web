@@ -1,0 +1,78 @@
+
+const express = require('express');
+const destinoServico = require('../servico/destinoServico');
+const router = express.Router();
+
+
+router.post('/destino', (req, res) => {
+    const destinoData = req.body;
+    const novoDestino = destinoServico.cadastrarDestino(destinoData);
+    res.json(novoDestino);
+});
+
+
+router.get('/destino', (req, res) => {
+    const destinos = destinoServico.listarDestinos();
+    res.json(destinos);
+});
+
+
+router.get('/destino/pesquisa', (req, res) => {
+    const { nome, localizacao } = req.query;
+    const resultados = destinoServico.pesquisarDestinos(nome, localizacao);
+    res.json(resultados);
+});
+
+
+router.get('/destino/:id', (req, res) => {
+    const { id } = req.params;
+    const destino = destinoServico.obterDestinoPorId(id);
+    if (destino) {
+        res.json(destino);
+    } else {
+        res.status(404).json({ message: 'Destino não encontrado' });
+    }
+});
+
+
+router.post('/destino/:id/avaliacao', (req, res) => {
+    const { id } = req.params;
+    const { nota } = req.body;
+
+    if (nota < 1 || nota > 10) {
+        return res.status(400).json({ message: 'Nota deve ser entre 1 e 10' });
+    }
+
+    const destinoAtualizado = destinoServico.adicionarAvaliacaoAoDestino(id, nota);
+    if (destinoAtualizado) {
+        res.json({ message: 'Avaliação registrada com sucesso', mediaAvaliacao: destinoAtualizado.calcularMediaAvaliacoes() });
+    } else {
+        res.status(404).json({ message: 'Destino não encontrado' });
+    }
+});
+
+
+router.put('/destinos/:id', (req, res) => {
+    const { id } = req.params;
+    const dadosAtualizados = req.body;
+
+    const destinoAtualizado = destinoServico.atualizarDestino(id, dadosAtualizados);
+    if (destinoAtualizado) {
+        res.json(destinoAtualizado);
+    } else {
+        res.status(404).json({ message: 'Destino não encontrado' });
+    }
+});
+
+
+router.delete('/destino/:id', (req, res) => {
+    const { id } = req.params;
+    const sucesso = destinoServico.excluirDestino(id);
+    if (sucesso) {
+        res.json({ message: 'Destino deletado' });
+    } else {
+        res.status(404).json({ message: 'Destino não encontrado' });
+    }
+});
+
+module.exports = router;

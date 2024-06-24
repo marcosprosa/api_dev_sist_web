@@ -1,0 +1,66 @@
+
+const Destino = require('../modelo/destino');
+
+let destinos = [];
+
+function cadastrarDestino(destinoData) {
+    const { id, nome, localizacao, detalhes } = destinoData;
+    const novoDestino = new Destino(id, nome, localizacao, detalhes);
+    destinos.push(novoDestino);
+    return novoDestino;
+}
+
+function listarDestinos() {
+    return destinos;
+}
+
+function pesquisarDestinos(nome, localizacao) {
+    return destinos.filter(d => {
+        return (nome ? d.nome.toLowerCase().includes(nome.toLowerCase()) : true) &&
+               (localizacao ? d.localizacao.toLowerCase().includes(localizacao.toLowerCase()) : true);
+    });
+}
+
+function obterDestinoPorId(id) {
+    return destinos.find(destino => destino.id == id);
+}
+
+function adicionarAvaliacaoAoDestino(id, nota) {
+    const destino = destinos.find(destino => destino.id == id);
+    if (destino) {
+        destino.adicionarAvaliacao(nota);
+        return destino;
+    }
+    return null;
+}
+
+function atualizarDestino(id, dadosAtualizados) {
+    let destinoAtualizado = null;
+    destinos = destinos.map(destino => {
+        if (destino.id == id) {
+            destinoAtualizado = { ...destino, ...dadosAtualizados };
+            return destinoAtualizado;
+        }
+        return destino;
+    });
+    return destinoAtualizado;
+}
+
+function excluirDestino(id) {
+    const index = destinos.findIndex(destino => destino.id == id);
+    if (index !== -1) {
+        destinos.splice(index, 1);
+        return true;
+    }
+    return false;
+}
+
+module.exports = {
+    cadastrarDestino,
+    listarDestinos,
+    pesquisarDestinos,
+    obterDestinoPorId,
+    adicionarAvaliacaoAoDestino,
+    atualizarDestino,
+    excluirDestino
+};
