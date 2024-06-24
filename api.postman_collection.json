@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "00f7aadd-6199-4225-add0-d2ce458bede8",
+		"name": "api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36526492"
+	},
+	"item": [
+		{
+			"name": "api_dev_sist_web_endpoints",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nome\": \"Praia de Copacabana\",\r\n  \"localizacao\": \"Rio de Janeiro, Brasil\",\r\n  \"detalhes\": \"Uma das praias mais famosas do mundo\"\r\n}\r\n\r\n{\r\n  \"id\": 3,\r\n  \"nome\": \"Praia de Copacabana 3\",\r\n  \"localizacao\": \"Rio de Janeiro, Brasil 3\",\r\n  \"detalhes\": \"Uma das praias mais famosas do mundo 3\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/destino",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"destino"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
